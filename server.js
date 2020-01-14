@@ -63,14 +63,12 @@ app.post('/login', (req, res) => {
 app.post('/register', (req, res) => {
     var error = false;
     var user = req.body;
-    if(User.findOne({email:user.email}, (err, existingEmail) =>{
-        if(!(existingEmail == null)){
+    User.findOne({email:user.email}, (err, existingEmail) =>{
+        if(existingEmail == null){
+            req.flash('reg', "Email already exists.")
             return err;
         }
-    }) == false){
-        req.flash('reg', "Email already exists.")
-        error = true;
-    }
+    })
     if (!(req.body.email.includes('@') && req.body.email.includes('.'))) {
         req.flash('reg', "I make the tricks, I don't buy 'em.")
         error = true;
